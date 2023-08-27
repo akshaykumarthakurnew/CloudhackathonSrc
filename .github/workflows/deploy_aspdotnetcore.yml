@@ -4,8 +4,18 @@ name: DeployAspDotNetCore
 on:
 # We also want to be able to run this manually from Github
   workflow_call:
-#    inputs:
-
+    inputs:
+      AZURE_API_NAME:
+        type: string
+      AZURE_WEBAPP_NAME:
+        type: string
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      AZURE_CONTOSO_CONN_STRING:
+        required: true
+      AZURE_CONTOSO_APP_INSIGHTS:
+        required: true
 
 jobs:
   deploy:
@@ -22,4 +32,37 @@ jobs:
         with:
           name: api
           path: api-artifact
+
+      - name: Variable Substitution API
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: api-artifact/appsettings.json
+        env:
+          ConnectionStrings.ContosoUniversityAPIContext: ${{ secrets.AZURE_CONTOSO_CONN_STRING }}
+          ApplicationInsights.ConnectionString: ${{ secrets.AZURE_CONTOSO_APP_INSIGHTS }}
+      
+      - name: Variable Substitution APP
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: app-artifact/appsettings.json
+        env:
+          Api.Address: https://${{ env.AZ_API_NAME }}.azurewebsites.net/
+          ApplicationInsights.ConnectionString: ${{ secrets.AZURE_CONTOSO_APP_INSIGHTS }}
+      
+      - name: Azure Login
+        uses: Azure/login@v1.4.7
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy API
+        uses: azure/webapps-deploy@v2.2.3
+        with:
+          app-name: ${{ inputs.AZURE_API_NAME }}
+          package: api-artifact
+      
+      - name: Deploy APP
+        uses: azure/webapps-deploy@v2.2.3
+        with:
+          app-name: ${{ inputs.AZURE_WEBAPP_NAME }}
+          package: app-artifact   
  
