@@ -4,6 +4,10 @@ name: BuildAspDotNetCore
 on:
 # We also want to be able to run this manually from Github
   workflow_call:
+    inputs:
+      dotnetverion:
+        required: true
+        type: string
   
 #env:
   #CONFIGURATION: release
@@ -20,7 +24,8 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '${{ inputs.dotnetverion }}'  
+        #dotnet-version: '6.0.x'  ${{ inputs.dotnetverion }}
     
     - name: Restore
       run: dotnet restore src/ContosoUniversity.sln
