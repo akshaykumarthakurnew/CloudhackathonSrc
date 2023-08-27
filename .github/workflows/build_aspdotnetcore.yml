@@ -48,7 +48,7 @@ jobs:
 
     - name: Publish API
       #run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output PublishApi src/ContosoUniversity.API/ContosoUniversity.API.csproj
-      run: dotnet publish --output PublishApp ${{ inputs.webApiPubPath }}
+      run: dotnet publish --output PublishApi ${{ inputs.webApiPubPath }}
     
     - name: Upload APP results
       uses: actions/upload-artifact@v2
