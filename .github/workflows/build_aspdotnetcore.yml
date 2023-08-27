@@ -5,10 +5,15 @@ on:
 # We also want to be able to run this manually from Github
   workflow_call:
     inputs:
-      dotnetverion:
+      dotNetVerion:
         required: true
         type: string
-  
+      webAppPubPath:  
+        required: true
+        type: string
+      webApiPubPath:  
+        required: true
+        type: string
 #env:
   #CONFIGURATION: release
   #CONFIGURATION: feature
@@ -38,8 +43,10 @@ jobs:
       run: dotnet test src/ContosoUniversity.Test/ContosoUniversity.Test.csproj --verbosity normal --logger trx --results-directory TestResults
       
     - name: Publish APP
-      run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output PublishApp src/ContosoUniversity.WebApplication/ContosoUniversity.WebApplication.csproj
+      #run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output PublishApp src/ContosoUniversity.WebApplication/ContosoUniversity.WebApplication.csproj
+      run: dotnet publish --output PublishApp ${{ inputs.webAppPubPath }}
 
     - name: Publish API
-      run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output PublishApi src/ContosoUniversity.API/ContosoUniversity.API.csproj
+      #run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output PublishApi src/ContosoUniversity.API/ContosoUniversity.API.csproj
+      run: dotnet publish --output PublishApp ${{ inputs.webApiPubPath }}
     
