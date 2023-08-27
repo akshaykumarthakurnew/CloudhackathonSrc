@@ -1,0 +1,25 @@
+# Workflow to be executed on a PR rasie to main, code needs to be build, scanned before merging and deployed to DEV for testing
+name: DeployAspDotNetCore
+
+on:
+# We also want to be able to run this manually from Github
+  workflow_call:
+#    inputs:
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APP Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app
+          path: app-artifact
+      
+      - name: Download API Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: api
+          path: api-artifact
+ 
