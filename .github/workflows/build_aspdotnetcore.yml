@@ -1,0 +1,34 @@
+# Workflow to be executed on a PR rasie to main, code needs to be build, scanned before merging and deployed to DEV for testing
+name: BuildAspDotNetCore
+
+on:
+# We also want to be able to run this manually from Github
+  workflow_call:
+  
+#env:
+  #CONFIGURATION: release
+  #CONFIGURATION: feature
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+    
+    - name: Restore
+      run: dotnet restore src/ContosoUniversity.sln
+    
+    - name: Build
+      #run: dotnet build src/ContosoUniversity.sln --configuration ${{ env.CONFIGURATION }} --no-restore
+      run: dotnet build src/ContosoUniversity.sln  --no-restore
+    
+    - name: Test
+      run: dotnet test src/ContosoUniversity.Test/ContosoUniversity.Test.csproj --verbosity normal --logger trx --results-directory TestResults
+      
