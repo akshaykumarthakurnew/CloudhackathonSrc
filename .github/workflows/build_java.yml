@@ -12,6 +12,9 @@ on:
       mavenpath:
         required: true
         type: string
+      distribution:
+        required: true
+        type: string
 
 jobs:
   build:
@@ -24,6 +27,8 @@ jobs:
         uses: actions/setup-java@v3.12.0
         with:
           java-version: ${{ inputs.javaversion}}
+          distribution: ${{ inputs.distribution}}
+          #distribution: 'temurin'
           #java-version: '17'
 
 #cd ./hibernate-orm-panache-quickstart
