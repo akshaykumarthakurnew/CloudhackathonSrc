@@ -18,6 +18,7 @@ on:
 
 jobs:
   analyze_java:
+    if: ${{ inputs.language }} == 'java'
     name: Analyze Java
     runs-on: 'ubuntu-latest'
     steps:
@@ -44,3 +45,29 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{inputs.language}}"
+
+  analyze_dotnet:
+    if: ${{ inputs.language }} == 'dotnet'
+    name: Analyze dotnet
+    runs-on: 'ubuntu-latest'
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp', 'javascript' ]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages:  ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{ matrix.language }}"
