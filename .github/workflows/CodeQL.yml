@@ -9,18 +9,22 @@ on:
   #schedule:
   #  - cron: '15 23 * * 0'
   workflow_call:
+    inputs: 
+      language:
+        required: true
+        type: string
 
 jobs:
   analyze:
     name: Analyze
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    #timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
 
 
     strategy:
       fail-fast: false
-      matrix:
-        language: [ 'csharp', 'javascript' ]
+      #matrix:
+        #language: [ 'csharp', 'javascript' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby', 'swift' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
@@ -34,7 +38,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
-        languages: ${{ matrix.language }}
+        languages: ${{ inputs.language }}
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
 
@@ -48,4 +52,4 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
-        category: "/language:${{matrix.language}}"
+        category: "/language:${{inputs.language}}"
