@@ -9,6 +9,9 @@ on:
       mavenpath: 
         required: false
         type: string
+      distribution: 
+        required: false
+        type: string        
 
 jobs:
   analyze_java:
