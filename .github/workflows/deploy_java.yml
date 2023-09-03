@@ -12,9 +12,7 @@ on:
       slotname:
         required: true
         type: string
-      package:  
-        required: true
-        type: string
+      
         
     secrets:
       AZURE_CREDENTIALS:
@@ -48,8 +46,8 @@ jobs:
         with:
           app-name: ${{ inputs.appname }}
           slot-name: ${{ inputs.slotname }}
-          package: ${{ inputs.package }}
+          package: '${{ github.workspace }}/*.jar'
           #app-name: 'akkipayaljavy' appname
           #slot-name: 'Production'  slotname
-          #package: '${{ github.workspace }}/*.jar'  package
+          
       
