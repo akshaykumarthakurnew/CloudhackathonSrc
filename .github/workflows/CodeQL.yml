@@ -6,6 +6,9 @@ on:
       language:
         required: true
         type: string
+      javaversion: 
+        required: false
+        type: string    
       mavenpath: 
         required: false
         type: string
