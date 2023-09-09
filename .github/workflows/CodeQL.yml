@@ -19,7 +19,7 @@ on:
 jobs:
   analyze_java:
     name: Analyze Java
-    if: ${{ inputs.language }} == 'java'
+    if: ${{ inputs.language == 'java' }}
     runs-on: 'ubuntu-latest'
     steps:
     - name: Checkout repository
@@ -48,7 +48,7 @@ jobs:
 
   analyze_dotnet:
     name: Analyze dotnet
-    if: ${{ inputs.language }} == 'dotnet'
+    if: ${{ inputs.language == 'dotnet' }}
     runs-on: 'ubuntu-latest'
     strategy:
       fail-fast: false
