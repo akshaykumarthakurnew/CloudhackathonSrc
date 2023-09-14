@@ -3,8 +3,6 @@ name: "Sonarscan"
 on:
   workflow_call:  
     secrets:
-      GITHUB_TOKEN: 
-        required: true
       SONAR_TOKEN:
         required: true
 
@@ -20,5 +18,4 @@ jobs:
   # uses: SonarSource/sonarcloud-github-action@c25d2e7e3def96d0d1781000d3c429da22cd6252
       uses: SonarSource/sonarcloud-github-action@v2.0.2
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
